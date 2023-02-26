@@ -1,2 +1,2 @@
 # techchallenge
-Tech Challenge Körber - 02.2023 ..
+Tech Challenge - 02.2023 ..
