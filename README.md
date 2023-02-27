@@ -4,7 +4,7 @@
 
 The project is a Java application built with Spring Boot and Lombok. It uses Flyway for database migrations, Maven as the build tool, and Docker for containerization. The application uses a PostgreSQL database to store patient consults, pathologies, and symptoms.
 
-The purpose of the application is to provide a way to log patient consults in the hospital and keep track of their pathologies and symptoms. The hospital board wants to also be able to keep adding new consults and patients every day and for now they are happy with the pathologies and symptoms they have in their database so that is out of scope.
+The objective of the application is to enable logging of patient consultations in the hospital and facilitate the tracking of their medical conditions and symptoms. The hospital administration intends to add new patient consultations and records on a daily basis. At present, the hospital board is satisfied with the medical conditions and symptoms in their database and therefore, expanding it is not a part of this project's scope.
 
 ### **Start-up**
 
@@ -39,7 +39,10 @@ curl  'http://localhost:8080/challenge/consult'
 }'
 
 ###  **Database**
-The application uses a PostgreSQL database to store patient consults, pathologies, and symptoms. Flyway is used to manage database migrations, so you don't need to manually create or modify database tables. The database connection properties are configured in the application.properties file located in the project's src/main/resources directory.
+The application uses a PostgreSQL database to store patient consults, pathologies, and symptoms. Flyway is used to manage database migrations, so you don't need to manually create or modify database tables. The database connection properties are configured in the application.properties file located in the project's src/main/resources directory and the migrations are in the same directory inside the package db.
+    
+   ![Screenshot from 2023-02-27 16-09-35](https://user-images.githubusercontent.com/109983739/221616859-536f8e44-ee17-4ae9-a592-b2933bcadd62.png)
+
 
 
 
