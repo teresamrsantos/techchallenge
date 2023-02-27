@@ -1,6 +1,6 @@
 package com.challenge.challenge.services;
 
-import com.challenge.challenge.models.Consult;
+import com.challenge.challenge.models.Patient;
 import com.challenge.challenge.models.Symptom;
 import com.challenge.challenge.repositories.SymptomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class SymptomService {
     SymptomRepository symptomRepository;
 
 
-    public List<Symptom> listAllSymptomsByConsult(Consult consult) {
-        return symptomRepository.findByConsult(consult);
+    public List<Symptom> listAllSymptomsByPatient(Patient patient) {
+        return symptomRepository.findAllSymptomsByPatientId(patient.getId());
     }
 }

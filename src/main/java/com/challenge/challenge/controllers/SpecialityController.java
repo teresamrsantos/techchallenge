@@ -24,6 +24,11 @@ public class SpecialityController {
     @Autowired(required = false)
     private SpecialityMapper specialityMapper;
 
+    /**
+     Retrieves a list of top specialities based on the number of distinct patients assigned to each one.
+     @return a  ResponseEntity with a list of Map<String, Object representing each speciality and its patient count.
+     */
+    /* curl --request GET \--url http://localhost:8080/challenge/speciality */
     @GetMapping()
     public ResponseEntity<List<Map<String, Object>>> getListOfTopSpecialities() {
         return ResponseEntity.status(HttpStatus.OK)

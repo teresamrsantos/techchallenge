@@ -1,7 +1,6 @@
 package com.challenge.challenge.services;
 
 import com.challenge.challenge.models.Consult;
-import com.challenge.challenge.models.Pathology;
 import com.challenge.challenge.models.Patient;
 import com.challenge.challenge.models.Symptom;
 import com.challenge.challenge.repositories.PatientRepository;
@@ -13,7 +12,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PatientService {
@@ -24,39 +25,45 @@ public class PatientService {
     ConsultService consultService;
     @Autowired
     SymptomService symptomService;
+
     /**
-     * Get All Patients filtered either by age or name and within a page according to the attributes sent on the pageable,
-     * such as page number, number of items per page, sort direction and which attribute should it be sorted by.
+     * Retrieves a page of patients based on the filtering parameters and pageable attributes.
      *
-     * @param filter
-     * @param pageable
-     * @return
+     * @param filter   String to filter patients by name or age
+     * @param pageable pageable attributes such as page number, number of items per page, sort direction and which attribute should it be sorted by
+     * @return a page of patients
      */
     public Page<Patient> getPageListOfPatients(String filter, Pageable pageable) {
         Specification<Patient> filterSpec = PatientSpecification.filters(filter);
         return this.patientRepository.findAll(filterSpec, pageable);
     }
 
-
-    public Patient findPatientByUuid(UUID uuidPatient) {
-        return patientRepository.findByUuid(uuidPatient).orElseThrow(() ->
+    /**
+     * Retrieves a patient by UUID
+     *
+     * @param uuidPatient the UUID of the patient to be retrieved
+     * @return the patient with the given UUID
+     * @throws EntityNotFoundException if no patient is found with the given UUID
+     */
+    public Patient findPatientById(Long uuidPatient) {
+        return patientRepository.findPatientById(uuidPatient).orElseThrow(() ->
                 new EntityNotFoundException("Patient Not Found"));
     }
 
-    public List<Map<Consult, List<Symptom>>> getConsultsWithSymptomsByPatient(UUID patientUUID) {
-        Patient patient = findPatientByUuid(patientUUID);
-        List<Map<Consult, List<Symptom>>> result = new ArrayList<>();
+    /**
+     * Retrieves a map with two lists: Consults and Symptoms, both related to a specific patient.
+     *
+     * @param patientUUID the UUID of the patient whose consults and symptoms will be retrieved
+     * @return a map with two lists: Consults and Symptoms
+     * @throws EntityNotFoundException if no patient is found with the given UUID
+     */
+    public List<Consult> getConsultsByPatient(Patient patient) {
+        return consultService.listAllConsultsByPatient(patient);
+    }
 
-        List<Consult> consults = consultService.listAllConsultsByPatient(patient);
-        for (Consult consult : consults) {
-            for (Pathology pathology : consult.getPatient().getPathologyList()) {
-            List<Symptom> symptoms = pathology.getSymptomList();
-            Map<Consult, List<Symptom>> consultSymptomsMap = new HashMap<>();
-            consultSymptomsMap.put(consult, symptoms);
-            result.add(consultSymptomsMap);
-        }
 
-        return result;
+    public  List<Symptom> getSymptomsByPatient(Patient patient) {
+        return symptomService.listAllSymptomsByPatient(patient);
     }
 
 

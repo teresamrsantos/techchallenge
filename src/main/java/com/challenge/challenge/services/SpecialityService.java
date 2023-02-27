@@ -29,7 +29,7 @@ public class SpecialityService {
 
         for (Speciality speciality : specialities) {
             Map<String, Object> result = new HashMap<>();
-            Long patientCount = consultService.countUniquePacientsPerSpeciality(speciality);
+            Long patientCount = consultService.countUniquePatientsPerSpeciality(speciality);
             result.put("speciality", speciality.getDescription());
             result.put("patientCount", patientCount);
             results.add(result);

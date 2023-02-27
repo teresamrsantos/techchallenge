@@ -9,6 +9,6 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class PathologyDTO {
-    private UUID uuid;
+    private Long id;
     private List<SymptomDTO> symptomList;
 }

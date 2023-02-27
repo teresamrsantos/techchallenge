@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class DoctorDTO {
-    private UUID uuid;
+    private Long id;
     private String name;
     private SpecialityDTO specialityDTO;
 }

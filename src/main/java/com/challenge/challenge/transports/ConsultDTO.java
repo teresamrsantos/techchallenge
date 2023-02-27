@@ -8,8 +8,10 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class ConsultDTO {
-    private UUID uuid;
-    private UUID doctorUuid;
-    private UUID patientUuid;
+    private Long id;
+    private Long doctorId;
+    private String doctorName;
+    private Long patientId;
+    private String patientName;
     private SpecialityDTO speciality;
 }

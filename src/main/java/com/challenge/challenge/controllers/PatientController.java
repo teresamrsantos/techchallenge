@@ -11,8 +11,6 @@ import com.challenge.challenge.transports.ConsultDTO;
 import com.challenge.challenge.transports.PatientDTO;
 import com.challenge.challenge.transports.SymptomDTO;
 import com.challenge.challenge.utils.Constants;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,11 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-
-@Api(tags = {"Patient"})
 @RestController
 @RequestMapping("patient")
 public class PatientController {
@@ -43,8 +38,15 @@ public class PatientController {
     @Autowired
     private ConsultMapper consultMapper;
 
-    @ApiOperation(value = "Get list of all patients with pagination, filtering and sorting",
-            notes = "This endpoint will return the data for all the patients with pagination, filtering and sorting by either age or name")
+    /**
+     * Retrieves a paginated list of all patients, filtered and sorted by either name or age.
+     *
+     * @param search   The search term to filter the patients by (defaults to "_").
+     * @param pageable The paging and sorting parameters.
+     * @return The paginated list of patients that match the search term and paging/sorting parameters, wrapped in a ResponseEntity with HTTP status code 200 (OK).
+     */
+    /*curl -X GET 'http://localhost:8080/challenge/patient?page=1&size=10&sort=age&direction=DESC&search=John
+     * curl -X GET 'http://localhost:8080/challenge/patient?page=0&size=5&sort=name&direction=ASC*/
     @GetMapping()
     public ResponseEntity<Page<PatientDTO>> findPageGestoresProcedimento(
             @RequestParam(value = Constants.FIELD_SEARCH, defaultValue = "_") String search,
@@ -57,22 +59,22 @@ public class PatientController {
     }
 
 
-    @GetMapping("/{patientUuid}/consults")
-    public ResponseEntity<List<Map<ConsultDTO, List<SymptomDTO>>>> getConsultsWithSymptomsByPatient(@PathVariable("patientUuid") UUID patientUuid) {
-        List<Map<Consult, List<Symptom>>> consultsList = patientService.getConsultsWithSymptomsByPatient(patientUuid);
+    @GetMapping("/{patientId}/consults")
+    public ResponseEntity<Map<String, Object>> getConsultsWithSymptomsByPatient(@PathVariable("patientId") Long patientUuid) {
+        Patient patient = patientService.findPatientById(patientUuid);
 
-        List<Map<ConsultDTO, List<SymptomDTO>>> consultsDTOList = consultsList.stream()
-                .map(consultSymptomMap -> {
-                    ConsultDTO consultDTO = consultMapper.toDTO(consultSymptomMap.keySet().iterator().next());
-                    List<SymptomDTO> symptomsDTO = symptomMapper.toDTO();
-                    Map<ConsultDTO, List<SymptomDTO>> consultSymptomDTOMap = new HashMap<>();
-                    consultSymptomDTOMap.put(consultDTO, symptomsDTO);
-                    return consultSymptomDTOMap;
-                })
+        List<ConsultDTO> consults =  patientService.getConsultsByPatient(patient).stream()
+                .map(consult -> consultMapper.toDTO(consult))
                 .collect(Collectors.toList());
 
-        return ResponseEntity.status(HttpStatus.OK).body(consultsDTOList);
-    }
+        List<SymptomDTO> symptoms =  patientService.getSymptomsByPatient(patient).stream()
+                .map(symptom -> symptomMapper.toDTO(symptom))
+                .collect(Collectors.toList());
 
-}
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("Consults", consults);
+        result.put("Symptoms", symptoms);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 }

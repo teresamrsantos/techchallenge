@@ -15,11 +15,12 @@ public class ConsultService {
     @Autowired
     ConsultRepository consultRepository;
 
-    public Long countUniquePacientsPerSpeciality(Speciality speciality) {
+    public Long countUniquePatientsPerSpeciality(Speciality speciality) {
         return consultRepository.countDistinctPatientsBySpeciality(speciality.getId());
     }
 
     public List<Consult> listAllConsultsByPatient(Patient patient) {
-        return consultRepository.findByPatient(patient);
+
+        return consultRepository.findAllByPatient(patient);
     }
 }
