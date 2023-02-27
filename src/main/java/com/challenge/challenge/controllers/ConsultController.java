@@ -27,13 +27,6 @@ public class ConsultController {
      * @param consultDTO the ConsultDTO containing the details of the new consult
      * @return a ResponseEntity containing the HTTP status code and the ID of the created consult
      */
-    /* curl --location --request POST 'http://localhost:8080/consults' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "doctorId": 123,
-    "patientId": 456,
-    "specialityId": 789
-}'*/
     @PostMapping()
     public ResponseEntity<Long> createConsult(@RequestBody ConsultDTO consultDTO) {
         Consult newConsult = consultMapper.toEntity(consultDTO);

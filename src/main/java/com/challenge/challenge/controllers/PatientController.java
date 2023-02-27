@@ -42,8 +42,6 @@ public class PatientController {
      * @param pageable The paging and sorting parameters.
      * @return The paginated list of patients that match the search term and paging/sorting parameters, wrapped in a ResponseEntity with HTTP status code 200 (OK).
      */
-    /*curl -X GET 'http://localhost:8080/challenge/patient?page=1&size=10&sort=age&direction=DESC&search=John
-     * curl -X GET 'http://localhost:8080/challenge/patient?page=0&size=5&sort=name&direction=ASC*/
     @GetMapping()
     public ResponseEntity<Page<PatientDTO>> findPageGestoresProcedimento(
             @RequestParam(value = "search", defaultValue = "_") String search,
@@ -60,7 +58,6 @@ public class PatientController {
      @param patientId the ID of the patient to retrieve consults with symptoms for.
      @return a ResponseEntity containing a Map with two keys: "Consults" and "Symptoms".
      */
-    /*curl -X GET "http://localhost:8080/challenge/patient/123/consults" -H "accept: application/json"*/
     @GetMapping("/{patientId}/consults")
     public ResponseEntity<Map<String, Object>> getConsultsWithSymptomsByPatient(@PathVariable("patientId") Long patientId) {
         Patient patient = patientService.findPatientById(patientId);
