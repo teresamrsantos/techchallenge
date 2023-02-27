@@ -5,6 +5,7 @@ import com.challenge.challenge.repositories.SpecialityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +20,9 @@ public class SpecialityService {
     ConsultService consultService;
 
     /**
-     * Get All specialities that have more than 2 UNIQUE patients.
+     * Returns a list of maps containing the number of unique patients per speciality with more than two unique patients.
      *
-     * @return
+     * @return a list of maps with the speciality description and the number of unique patients
      */
     public List<Map<String, Object>> getPatientCountPerSpeciality() {
         List<Speciality> specialities = specialityRepository.findSpecialitiesWithMoreThanTwoUniquePatients();
@@ -38,6 +39,17 @@ public class SpecialityService {
         return results;
     }
 
+    /**
+     * Finds a speciality by its ID.
+     *
+     * @param id the ID of the speciality to find
+     * @return the speciality with the given ID
+     * @throws EntityNotFoundException if the speciality with the given ID is not found
+     */
+    public Speciality findById(Long id) {
+        return specialityRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Speciality Not Found"));
+    }
 }
 
 

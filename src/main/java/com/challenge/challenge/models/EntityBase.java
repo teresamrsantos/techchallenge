@@ -3,9 +3,11 @@ package com.challenge.challenge.models;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.util.UUID;
 
 @Data
 @MappedSuperclass
@@ -15,11 +17,4 @@ public class EntityBase implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, updatable = false, unique = true)
-    private UUID uuid;
-
-    @PrePersist
-    private void setUuid() {
-        this.setUuid(UUID.randomUUID());
-    }
 }

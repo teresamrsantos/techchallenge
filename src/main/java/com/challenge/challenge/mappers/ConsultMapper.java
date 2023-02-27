@@ -14,9 +14,12 @@ public interface ConsultMapper {
     @Mapping(target = "doctorName", source = "doctor.name")
     @Mapping(target = "patientId", source = "patient.id")
     @Mapping(target = "patientName", source = "patient.name")
+    @Mapping(target = "specialityId", source = "speciality.id")
+    @Mapping(target = "specialityDescription", source = "speciality.description")
     ConsultDTO toDTO(Consult consult);
 
     @Mapping(target = "doctor", source = "doctorId", qualifiedByName = "getDoctorById")
     @Mapping(target = "patient", source = "patientId", qualifiedByName = "getPatientById")
+    @Mapping(target = "speciality", source = "specialityId", qualifiedByName = "getSpecialityById")
     Consult toEntity(ConsultDTO consultDto);
 }

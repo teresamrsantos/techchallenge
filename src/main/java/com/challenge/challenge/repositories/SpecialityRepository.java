@@ -12,7 +12,7 @@ import java.util.List;
 public interface SpecialityRepository extends
         JpaRepository<Speciality, Long>, JpaSpecificationExecutor<Speciality> {
 
-    @Query("SELECT s FROM Speciality s JOIN s.doctorList d JOIN d.consultList c JOIN c.patient p GROUP BY s.id HAVING COUNT(DISTINCT p.uuid) > 2")
+    @Query("SELECT s FROM Speciality s JOIN s.doctorList d JOIN d.consultList c JOIN c.patient p GROUP BY s.id HAVING COUNT(DISTINCT p.id) > 2")
     List<Speciality> findSpecialitiesWithMoreThanTwoUniquePatients();
 }
 

@@ -3,14 +3,11 @@ package com.challenge.challenge.controllers;
 import com.challenge.challenge.mappers.ConsultMapper;
 import com.challenge.challenge.mappers.PatientMapper;
 import com.challenge.challenge.mappers.SymptomMapper;
-import com.challenge.challenge.models.Consult;
 import com.challenge.challenge.models.Patient;
-import com.challenge.challenge.models.Symptom;
 import com.challenge.challenge.services.PatientService;
 import com.challenge.challenge.transports.ConsultDTO;
 import com.challenge.challenge.transports.PatientDTO;
 import com.challenge.challenge.transports.SymptomDTO;
-import com.challenge.challenge.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,7 +46,7 @@ public class PatientController {
      * curl -X GET 'http://localhost:8080/challenge/patient?page=0&size=5&sort=name&direction=ASC*/
     @GetMapping()
     public ResponseEntity<Page<PatientDTO>> findPageGestoresProcedimento(
-            @RequestParam(value = Constants.FIELD_SEARCH, defaultValue = "_") String search,
+            @RequestParam(value = "search", defaultValue = "_") String search,
             @PageableDefault(value = 5, page = 0, sort = {"name"}, direction = Sort.Direction.ASC) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -58,10 +55,15 @@ public class PatientController {
                         .map(patientMapper::toDTO));
     }
 
-
+    /**
+     GET endpoint to retrieve all consults with symptoms associated with a specific patient.
+     @param patientId the ID of the patient to retrieve consults with symptoms for.
+     @return a ResponseEntity containing a Map with two keys: "Consults" and "Symptoms".
+     */
+    /*curl -X GET "http://localhost:8080/challenge/patient/123/consults" -H "accept: application/json"*/
     @GetMapping("/{patientId}/consults")
-    public ResponseEntity<Map<String, Object>> getConsultsWithSymptomsByPatient(@PathVariable("patientId") Long patientUuid) {
-        Patient patient = patientService.findPatientById(patientUuid);
+    public ResponseEntity<Map<String, Object>> getConsultsWithSymptomsByPatient(@PathVariable("patientId") Long patientId) {
+        Patient patient = patientService.findPatientById(patientId);
 
         List<ConsultDTO> consults =  patientService.getConsultsByPatient(patient).stream()
                 .map(consult -> consultMapper.toDTO(consult))

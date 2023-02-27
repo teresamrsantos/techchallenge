@@ -12,9 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PatientService {
@@ -39,30 +37,34 @@ public class PatientService {
     }
 
     /**
-     * Retrieves a patient by UUID
+     * Finds a  Patient by its ID.
      *
-     * @param uuidPatient the UUID of the patient to be retrieved
-     * @return the patient with the given UUID
-     * @throws EntityNotFoundException if no patient is found with the given UUID
+     * @param id the ID of the patient to find
+     * @return the  Patient  with the given ID
+     * @throws EntityNotFoundException if the patient with the given ID is not found in the database
      */
-    public Patient findPatientById(Long uuidPatient) {
-        return patientRepository.findPatientById(uuidPatient).orElseThrow(() ->
+    public Patient findPatientById(Long id) {
+        return patientRepository.findPatientById(id).orElseThrow(() ->
                 new EntityNotFoundException("Patient Not Found"));
     }
 
     /**
-     * Retrieves a map with two lists: Consults and Symptoms, both related to a specific patient.
+     * Returns a list of all consults associated with a given patient.
      *
-     * @param patientUUID the UUID of the patient whose consults and symptoms will be retrieved
-     * @return a map with two lists: Consults and Symptoms
-     * @throws EntityNotFoundException if no patient is found with the given UUID
+     * @param patient the patient for whom to retrieve consults
+     * @return a list of Consult objects associated with the given patient
      */
     public List<Consult> getConsultsByPatient(Patient patient) {
         return consultService.listAllConsultsByPatient(patient);
     }
 
-
-    public  List<Symptom> getSymptomsByPatient(Patient patient) {
+    /**
+     * Returns a list of all symptoms associated with a given patient.
+     *
+     * @param patient the patient for whom to retrieve symptoms
+     * @return a list of Symptom objects associated with the given patient
+     */
+    public List<Symptom> getSymptomsByPatient(Patient patient) {
         return symptomService.listAllSymptomsByPatient(patient);
     }
 

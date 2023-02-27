@@ -2,7 +2,6 @@ package com.challenge.challenge.controllers;
 
 import com.challenge.challenge.mappers.SpecialityMapper;
 import com.challenge.challenge.services.SpecialityService;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = {"Speciality"})
 @RestController
 @RequestMapping("speciality")
 public class SpecialityController {
@@ -25,8 +23,9 @@ public class SpecialityController {
     private SpecialityMapper specialityMapper;
 
     /**
-     Retrieves a list of top specialities based on the number of distinct patients assigned to each one.
-     @return a  ResponseEntity with a list of Map<String, Object representing each speciality and its patient count.
+     * Retrieves a list of top specialities based on the number of distinct patients assigned to each one.
+     *
+     * @return a  ResponseEntity with a list of Map<String, Object representing each speciality and its patient count.
      */
     /* curl --request GET \--url http://localhost:8080/challenge/speciality */
     @GetMapping()

@@ -14,7 +14,12 @@ public class SymptomService {
     @Autowired
     SymptomRepository symptomRepository;
 
-
+    /**
+     * Retrieves all symptoms for a given patient.
+     *
+     * @param patient The patient to retrieve symptoms for.
+     * @return A list of Symptom associated with the given patient.
+     */
     public List<Symptom> listAllSymptomsByPatient(Patient patient) {
         return symptomRepository.findAllSymptomsByPatientId(patient.getId());
     }
